@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import pereira.otavio.evelyn.lista.R;
 
@@ -29,12 +30,11 @@ public class NewItemActivity extends AppCompatActivity {
             Button btnAddItem = findViewById(R.id.btnAddItem);
             btnAddItem.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v){
                     if (photoSelected == null) {
                         Toast.makeText(NewItemActivity.this, "É necessário selecionar uma imagem!", Toast.LENGTH_LONG).show();
                         return;
                     }
-
                     EditText etTitle = findViewById(R.id.etTitle);
                     String title = etTitle.getText().toString();
                     if (title.isEmpty()) {
