@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                         protected void onActivityResult(int requestCode, int resultCode,
                         Intent data) {super.onActivityResult(requestCode, resultCode, data);}
                         if(requestCode == NEW_ITEM_REQUEST) {if(resultCode == Activity.RESULT_OK) {
-                            MyItem myItem = new MyItem();}
+                            MyItem myItem = new MyItem();
                             myItem.title = data.getStringExtra("title");
                             myItem.description =
                                     data.getStringExtra("description");
