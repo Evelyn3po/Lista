@@ -21,7 +21,7 @@ import pereira.otavio.evelyn.lista.model.MyItem;
 
 public class MainActivity extends AppCompatActivity {
     static int NEW_ITEM_REQUEST = 1;
-    List<MyItem> items = new ArrayList<>();
+    List<MyItem> itens = new ArrayList<>();
 
     MyAdapter myAdapter;
 
@@ -29,11 +29,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FloatingActionButton fabAddItem =
-                findViewById(R.id.fabAddNewItem);
+        FloatingActionButton fabAddItem = findViewById(R.id.fabAddNewItem);
+        fabAddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, NewItemActivity.class);
+                startActivityForResult(i, NEW_ITEM_REQUEST);
+            }
+        });
 
-        RecyclerView rCommItens = findViewById(R.id.rvItens);
-        myAdapter = new MyAdapter(this, items);
+        RecyclerView rvItens = findViewById(R.id.rvItens);
+        myAdapter = new MyAdapter(this, itens);
         rvItens.setAdapter(myAdapter);
 
         rvItens.setHasFixedSize(true);
@@ -42,12 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvItens.getContext(), DividerItemDecoration.VERTICAL);
         rvItens.addItemDecoration(dividerItemDecoration);
-    }
-
-    @Override
-    public void onClick (View v){
-        Intent i = new Intent(MainActivity.this, NewItemActivity.class);
-        startActivityForResult(i, NEW_ITEM_REQUEST);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
                 myItem.description =
                         data.getStringExtra("description");
                 myItem.photo = data.getData();
-                items.add(myItem);
-                myAdapter.notifyItemInserted(items.size() - 1);
+                itens.add(myItem);
+                myAdapter.notifyItemInserted(itens.size() - 1);
             }
         }
     }
