@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     MyAdapter myAdapter;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -37,15 +38,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(i, NEW_ITEM_REQUEST);
             }
         });
-
+        /*configurado na classe my Adapter*/
         RecyclerView rvItens = findViewById(R.id.rvItens);
         myAdapter = new MyAdapter(this, itens);
         rvItens.setAdapter(myAdapter);
 
+        /*definição de tamanho fixo*/
         rvItens.setHasFixedSize(true);
+        /*responsável por organizar os itens na horizontal ou vertical*/
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rvItens.setLayoutManager(layoutManager);
-
+        /*adiciona uma linha de separação entre cada item da lista e organiza o item na vertical*/
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvItens.getContext(), DividerItemDecoration.VERTICAL);
         rvItens.addItemDecoration(dividerItemDecoration);
     }
