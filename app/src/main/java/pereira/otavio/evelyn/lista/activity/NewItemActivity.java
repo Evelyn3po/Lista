@@ -34,12 +34,18 @@ import pereira.otavio.evelyn.lista.util.Util;
 
 public class NewItemActivity extends AppCompatActivity {
     static int PHOTO_PICKER_REQUEST = 1;
-    Uri photoSelected = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_item);
+        NewItemActivityViewModel vm = new ViewModelProvider( this ).get(
+                NewItemActivityViewModel.class );
+        Uri selectPhotoLocation = vm.getSelectPhotoLocation();
+        if(selectPhotoLocation != null) {
+            ImageView imvfotoPreview = findViewById(R.id.imvfotoPreview);
+            imvfotoPreview.setImageURI(selectPhotoLocation);
+        }
         //Obtenção de ImageButton
         ImageButton imgCL = findViewById(R.id.imbCl);
         //Definição de um ouvidor de cliques de imageButton
@@ -62,7 +68,8 @@ public class NewItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Verifica se os campos foram preenchidos pelos usúarios
-                if (photoSelected == null) {
+                Uri selectPhotoLocation = vm.getSelectPhotoLocation();
+                if (selectPhotoLocation == null) {
                     Toast.makeText(NewItemActivity.this, "É necessário selecionar uma imagem!", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -82,7 +89,7 @@ public class NewItemActivity extends AppCompatActivity {
                 //Criação do Intent - Serve para guardar os dados a serem retornados para a MainActivity
                 Intent i = new Intent();
                 //Setamos o Uri da imagem escolhida dentro do intent
-                i.setData(photoSelected);
+                i.setData(selectPhotoLocation);
                 //Setamos o titulo e a descrição
                 i.putExtra("title", title);
                 i.putExtra("description", description);
@@ -101,12 +108,11 @@ public class NewItemActivity extends AppCompatActivity {
         //Verifica se o requestCode é um código de sucesso
         if (requestCode == PHOTO_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                //Obtenção da Uri da imagem e guardar no atributo de classe photoSelected
-                photoSelected = data.getData();
-                //Obtenção de ImageView
+                Uri photoSelected = data.getData();
                 ImageView imvfotoPreview = findViewById(R.id.imvfotoPreview);
-                //Setar o Uri no ImageView para que a foto seja exibida
                 imvfotoPreview.setImageURI(photoSelected);
+                NewItemActivityViewModel vm = new ViewModelProvider(this).get(NewItemActivityViewModel.class);
+                vm.setSelectPhotoLocation(photoSelected);
             }
         }
     }

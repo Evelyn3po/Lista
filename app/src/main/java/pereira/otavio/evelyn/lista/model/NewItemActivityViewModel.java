@@ -11,6 +11,5 @@ public class NewItemActivityViewModel extends ViewModel {
     }
     public void setSelectPhotoLocation(Uri selectPhotoLocation) {
         this.selectPhotoLocation = selectPhotoLocation;
-
     }
 }

@@ -27,7 +27,6 @@ import pereira.otavio.evelyn.lista.util.Util;
 
 public class MainActivity extends AppCompatActivity {
     static int NEW_ITEM_REQUEST = 1;
-    List<MyItem> itens = new ArrayList<>();
 
 
     @Override
@@ -37,11 +36,19 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK) {
                 MyItem myItem = new MyItem();
                 myItem.title = data.getStringExtra("title");
-                myItem.description =
-                        data.getStringExtra("description");
-                myItem.photo = data.getData();
-                itens.add(myItem);
-                myAdapter.notifyItemInserted(itens.size() - 1);
+                myItem.description = data.getStringExtra("description");
+                Uri selectedPhotoURI = data.getData();
+                 try {
+                     Bitmap photo = Util.getBitmap(MainActivity.this, selectedPhotoURI, 100, 100);
+                     myItem.photo = photo;
+                 } catch (FileNotFoundException e) {
+                     e.printStackTrace();
+                 }
+                 MainActivityViewModel vm = new ViewModelProvider( this ).get(
+                        MainActivityViewModel.class );
+                 List<MyItem> itens = vm.getItens();
+                 itens.add(myItem);
+                 myAdapter.notifyItemInserted(itens.size()-1);
             }
         }
     }
@@ -62,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         RecyclerView rvItens = findViewById(R.id.rvItens);
+        MainActivityViewModel vm = new ViewModelProvider( this ).get(
+                MainActivityViewModel.class );
+        List<MyItem> itens = vm.getItens();
         myAdapter = new MyAdapter(this, itens);
         rvItens.setAdapter(myAdapter);
         rvItens.setHasFixedSize(true);
